@@ -3,13 +3,16 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 from collections import defaultdict
 import string
+import re
 
 # Download necessary NLTK resources
 nltk.download('punkt')
 nltk.download('stopwords')
 
 def preprocess_text(text):
-    """Preprocess text by tokenizing sentences and words, removing stopwords, and stemming."""
+    """Preprocess text by cleaning and tokenizing sentences and words, removing stopwords, and stemming."""
+    # Replace bullet points and excessive newlines with a period for sentence tokenization
+    text = re.sub(r'•|\n', '. ', text)
     sentences = sent_tokenize(text)
     stop_words = set(stopwords.words('english'))
     preprocessed_sentences = []
@@ -46,28 +49,23 @@ def summarize(text, top_n=3):
     return ' '.join(summary)
 
 if __name__ == "__main__":
-    # Example text
+    # Input text
     text = (
-        "Deep packet inspection (DPI) is a type of data processing that inspects in detail the data being sent "
-        "over a computer network, and may take actions such as alerting, blocking, re-routing, or logging it accordingly. "
-        "Deep packet inspection is often used for baselining application behavior, analyzing network usage, troubleshooting "
-        "network performance, ensuring that data is in the correct format, checking for malicious code, eavesdropping, "
-        "and internet censorship, among other purposes. There are multiple headers for IP packets; network equipment "
-        "only needs to use the first of these (the IP header) for normal operation, but use of the second header "
-        "(such as TCP or UDP) is normally considered to be shallow packet inspection (usually called stateful packet "
-        "inspection) despite this definition. "
-        "There are multiple ways to acquire packets for deep packet inspection. Using port mirroring (sometimes called "
-        "Span Port) is a very common way, as well as physically inserting a network tap which duplicates and sends "
-        "the data stream to an analyzer tool for inspection. "
-        "Deep Packet Inspection (and filtering) enables advanced network management, user service, and security functions "
-        "as well as internet data mining, eavesdropping, and internet censorship. Although DPI has been used for Internet "
-        "management for many years, some advocates of net neutrality fear that the technique may be used anticompetitively "
-        "or to reduce the openness of the Internet. "
-        "DPI is used in a wide range of applications, at the so-called 'enterprise' level (corporations and larger institutions), "
-        "in telecommunications service providers, and in governments."
+        """
+A transition to a complex state is equivalent to a
+simultaneous transition to the initial states of
+each concurrent statechart
+• An initial state must be specified in both nested
+statecharts in order to avoid ambiguity about
+which substate should first be entered in each
+concurrent region
+• A transition to the Active state means that the
+Campaign object simultaneously enters the
+Advert Preparation and Survey states
+        """
     )
     
     # Summarize the text
-    summary = summarize(text, top_n=4)
+    summary = summarize(text, top_n=2)
     print("Summary:")
     print(summary)

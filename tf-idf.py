@@ -7,7 +7,7 @@ def tfidf_sentence_scoring(sentences):
     """Score sentences using TF-IDF."""
     vectorizer = TfidfVectorizer()
     X = vectorizer.fit_transform(sentences)
-    scores = X.sum(axis=1).A1  # Sum TF-IDF scores for each sentence
+    scores = X.sum(axis=1).A1
     ranked_sentences = [(score, i, sentences[i]) for i, score in enumerate(scores)]
     ranked_sentences.sort(reverse=True, key=lambda x: x[0])
     return ranked_sentences
